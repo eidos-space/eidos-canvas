@@ -15,6 +15,6 @@ Arrange notes, links, and files on a canvas in Eidos Lite. Canvas opens and save
 
 ## Use Markdown from your Space
 
-Drag a Markdown file from the Space Explorer onto the board. The card previews the original and refreshes after you save changes to that file. Click the card's title to open the original in Eidos Lite.
+Drag a Markdown file from the Space Explorer onto the board. The card previews the original and refreshes after you save changes to that file. In Eidos Lite 0.38.0 or later, click the card's title to open the original in the right sidebar while keeping the canvas visible. Earlier versions of Lite open the file in the main editor.
 
 If you move or rename a Markdown file, drop it onto its unavailable card to restore the reference and keep the card's position and connections. You can also choose **Relink file** and enter its new path within the Space. When moving a board to another Space, bring along its referenced files so the previews can still find them.

@@ -1,9 +1,5 @@
-Create and edit Obsidian-compatible `.canvas` boards in Eidos Lite.
+Open a Markdown card's source in the right sidebar and keep its canvas visible in Eidos Lite 0.38.0 or later. Click the card's title to open the source. Earlier versions of Lite open the source in the main editor.
 
-- Arrange text, files, links, and groups. Connect cards and resize or recolor them on the board.
-- Drag Markdown from the Space Explorer to preview the original. If a file moves or is renamed, drop it onto its unavailable card to restore the reference and keep its connections.
-- Find installation steps and keyboard shortcuts in the English and Simplified Chinese user guides bundled with the plugin.
+在 Eidos Lite 0.38.0 及以上版本，点击 Markdown 卡片标题，即可在右侧栏打开原文，同时保留画布。在较早版本中，原文会在主编辑区打开。
 
-For Eidos Lite desktop. Tested on Eidos Lite 0.36.0.
-
-[English guide](https://github.com/eidos-space/eidos-canvas/blob/v0.5.6/README.md) · [简体中文使用说明](https://github.com/eidos-space/eidos-canvas/blob/v0.5.6/README.zh.md)
+[English guide](https://github.com/eidos-space/eidos-canvas/blob/v0.5.7/README.md) · [简体中文使用说明](https://github.com/eidos-space/eidos-canvas/blob/v0.5.7/README.zh.md)
