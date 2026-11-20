@@ -1,13 +1,13 @@
 import MarkdownIt from "markdown-it"
 import type { PluginFileSystem, ViewContext } from "@eidos.space/plugin-sdk"
 import type { CanvasNode } from "./canvas"
+import { fileCardOpenAction, isMarkdownFile } from "./file-card"
 import { decodePath, resolveSpacePath, webUrl } from "./paths"
 
 const markdown = new MarkdownIt({ html: false })
 const images = /\.(?:png|jpe?g|gif|webp|avif|bmp|ico)$/i
 const video = /\.(?:mp4|m4v|mov|webm|mkv)$/i
 const audio = /\.(?:mp3|wav|ogg|m4a|flac|opus|weba)$/i
-const notes = /\.(?:md|markdown)$/i
 
 function markdownSection(text: string, subpath?: string): string {
   if (!subpath || subpath === "#") return text
@@ -167,9 +167,9 @@ export function createContent(
     return url
   }
 
-  async function openFile(path: string, anchor: HTMLElement) {
+  async function openFile(path: string, anchor: HTMLElement, open = ui.openFile) {
     try {
-      await ui.openFile?.(path)
+      await open?.(path)
     } catch {
       if (!signal.aborted) feedback(t("file.missing"), anchor)
     }
@@ -304,8 +304,9 @@ export function createContent(
     const name = document.createElement("button")
     name.type = "button"
     name.className = "file-name"
-    name.textContent =
+    const label =
       (node.file.split(/[\\/]/).at(-1) || node.file) + (node.subpath ?? "")
+    name.textContent = label
     name.title = node.file + (node.subpath ?? "")
     name.disabled = true
     header.append(name)
@@ -313,7 +314,7 @@ export function createContent(
     preview.className = "file-preview"
     card.append(header, preview)
     let linkedPath: string | undefined
-    let openPath: string | undefined
+    let openOriginal: (() => void) | undefined
     let scope: AbortController | undefined
     let kind:
       | "missing"
@@ -324,12 +325,10 @@ export function createContent(
       | undefined
     let displayedMarkdown: string | undefined
 
-    name.setAttribute("aria-label", t("file.open") + " " + name.textContent)
+    name.setAttribute("aria-label", t("file.open") + " " + label)
     name.addEventListener(
       "click",
-      () => {
-        if (openPath) void openFile(openPath, name)
-      },
+      () => openOriginal?.(),
       { signal }
     )
 
@@ -369,15 +368,16 @@ export function createContent(
           : undefined
         : await resolve(node.file)
       if (!current()) return
-      openPath = path
-      name.disabled = !path || !ui.openFile
+      const open = path ? fileCardOpenAction(ui, path) : undefined
+      openOriginal = path && open ? () => void openFile(path, name, open) : undefined
+      name.disabled = !openOriginal
       card.toggleAttribute("data-file-missing", !path)
       if (!path) {
         unavailable(true)
         return
       }
       linkedPath = path
-      if (notes.test(path)) {
+      if (isMarkdownFile(path)) {
         const text = await readMarkdown(path)
         if (!current()) return
         if (text === undefined) unavailable()
@@ -420,7 +420,7 @@ export function createContent(
       const media = document.createElement(mediaTag)
       media.draggable = false
       if (media instanceof HTMLImageElement) {
-        media.alt = name.textContent
+        media.alt = label
         media.loading = "lazy"
         media.decoding = "async"
       } else {
