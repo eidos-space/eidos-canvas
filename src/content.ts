@@ -167,9 +167,12 @@ export function createContent(
     return url
   }
 
-  async function openFile(path: string, anchor: HTMLElement, open = ui.openFile) {
+  async function openWithFeedback(
+    anchor: HTMLElement,
+    open: () => Promise<void> | undefined
+  ) {
     try {
-      await open?.(path)
+      await open()
     } catch {
       if (!signal.aborted) feedback(t("file.missing"), anchor)
     }
@@ -213,7 +216,7 @@ export function createContent(
             () => undefined
           )
           if (lifetime.aborted) return
-          if (found) await openFile(found, link)
+          if (found) await openWithFeedback(link, () => ui.openFile?.(found))
           else feedback(t("file.missing"), link)
         },
         { signal: lifetime }
@@ -369,7 +372,7 @@ export function createContent(
         : await resolve(node.file)
       if (!current()) return
       const open = path ? fileCardOpenAction(ui, path) : undefined
-      openOriginal = path && open ? () => void openFile(path, name, open) : undefined
+      openOriginal = open ? () => void openWithFeedback(name, open) : undefined
       name.disabled = !openOriginal
       card.toggleAttribute("data-file-missing", !path)
       if (!path) {

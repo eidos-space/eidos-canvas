@@ -5,7 +5,9 @@ export function isMarkdownFile(path: string): boolean {
 }
 
 export function fileCardOpenAction(ui: HostUI, path: string) {
-  return isMarkdownFile(path)
-    ? (ui.openFileInSidebar ?? ui.openFile)
-    : ui.openFile
+  const { openFile } = ui
+  if (!openFile) return
+  if (isMarkdownFile(path) && ui.openFileTargets?.includes("sidebar"))
+    return () => openFile(path, { target: "sidebar" })
+  return () => openFile(path)
 }
