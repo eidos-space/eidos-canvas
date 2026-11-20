@@ -1,0 +1,36 @@
+{
+  "apiVersion": 1,
+  "id": "eidos.canvas",
+  "name": "%plugin.name%",
+  "description": "%plugin.description%",
+  "version": "0.5.6",
+  "requires": { "pluginApi": "3.7.0" },
+  "workspace": { "files": { "read": true } },
+  "i18n": {
+    "defaultLocale": "en",
+    "messages": { "en": "./locales/en.json", "zh-CN": "./locales/zh-CN.json" },
+    "readme": { "en": "./README.md", "zh-CN": "./README.zh.md" }
+  },
+  "views": [
+    {
+      "id": "viewer",
+      "kind": "file",
+      "title": "%plugin.name%",
+      "entry": "./src/main.ts",
+      "capabilities": ["document"],
+      "access": "write"
+    }
+  ],
+  "placements": [
+    { "location": "file/open", "view": "viewer", "extensions": [".canvas"] }
+  ],
+  "fileTemplates": [
+    {
+      "id": "blank",
+      "title": "Canvas",
+      "extension": ".canvas",
+      "view": "viewer",
+      "content": "{\n  \"nodes\": [],\n  \"edges\": []\n}\n"
+    }
+  ]
+}

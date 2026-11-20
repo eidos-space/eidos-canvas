@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "group",
+      "type": "group",
+      "label": "Research",
+      "x": -440,
+      "y": -210,
+      "width": 898,
+      "height": 454,
+      "color": "5"
+    },
+    {
+      "id": "question",
+      "type": "text",
+      "text": "## The question\n\nWhat should we be able to open directly from a local folder?\n\n- Keep the original files\n- Make references easy to inspect",
+      "x": -408,
+      "y": -155,
+      "width": 298,
+      "height": 205,
+      "color": "6"
+    },
+    {
+      "id": "note",
+      "type": "file",
+      "file": "notes/Research.md",
+      "subpath": "#Findings",
+      "x": 105,
+      "y": -157,
+      "width": 325,
+      "height": 220
+    },
+    {
+      "id": "link",
+      "type": "link",
+      "url": "https://jsoncanvas.org/spec/1.0/",
+      "x": 105,
+      "y": 119,
+      "width": 325,
+      "height": 87,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "results",
+      "fromNode": "question",
+      "fromSide": "right",
+      "toNode": "note",
+      "toSide": "left",
+      "label": "Findings",
+      "color": "6"
+    },
+    {
+      "id": "source",
+      "fromNode": "note",
+      "fromSide": "bottom",
+      "toNode": "link",
+      "toSide": "top",
+      "label": "Source"
+    }
+  ]
+}
